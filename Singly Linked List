@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+// Function to create linked list
+struct Node* createLL(int N)
+{
+    struct Node *head = NULL;
+    struct Node *temp = NULL;
+    struct Node *newNode = NULL;
+
+    for(int i = 1; i <= N; i++)
+    {
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+
+        printf("Enter data of %d node: ", i);
+        scanf("%d", &newNode->data);
+
+        newNode->next = NULL;
+
+        if(head == NULL)
+        {
+            head = newNode;
+            temp = newNode;
+        }
+        else
+        {
+            temp->next = newNode;
+            temp = newNode;
+        }
+    }
+
+    return head;
+}
+
+// Function to display linked list
+void display(struct Node *head)
+{
+    struct Node *temp = head;
+
+    printf("\nLinked List: ");
+
+    while(temp != NULL)
+    {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+
+int main()
+{
+    int N;
+
+    struct Node *head = NULL;
+
+    printf("Enter size: ");
+    scanf("%d", &N);
+
+    head = createLL(N);
+
+    display(head);
+
+    return 0;
+}
