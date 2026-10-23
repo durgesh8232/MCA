@@ -1,49 +1,95 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node
+struct node
 {
     int data;
-    struct Node *next;
+    struct node *next;
 };
 
-// Function to create linked list
-struct Node* createLL(int N)
+struct node* CreateLL(int n)
 {
-    struct Node *head = NULL;
-    struct Node *temp = NULL;
-    struct Node *newNode = NULL;
-
-    for(int i = 1; i <= N; i++)
+    struct node *temp = NULL;
+    struct node *head = NULL;
+    struct node *newnode = NULL;
+    
+    for(int i =1;i<=n;i++)
     {
-        newNode = (struct Node*)malloc(sizeof(struct Node));
-
-        printf("Enter data of %d node: ", i);
-        scanf("%d", &newNode->data);
-
-        newNode->next = NULL;
-
-        if(head == NULL)
-        {
-            head = newNode;
-            temp = newNode;
-        }
-        else
-        {
-            temp->next = newNode;
-            temp = newNode;
-        }
+    newnode = (struct node*)malloc(sizeof(struct node));
+    
+    printf("Enter the data of %d element: ",i);
+    scanf("%d",&newnode->data);
+    
+    newnode -> next = NULL;
+    
+    if(head == NULL)
+    {
+        head = temp = newnode;
     }
+    else
+    {
+        temp ->next = newnode;
+        temp = newnode;
+    }
+ }
+    return head;
+}
+
+struct node* insert(struct node *head, int data)
+{
+    struct node *newnode, *temp;
+
+    newnode = (struct node*)malloc(sizeof(struct node));
+    
+    newnode->data = data;
+    newnode->next = NULL;
+
+    if(head == NULL)
+        return newnode;
+
+    temp = head;
+    
+    while(temp->next != NULL){
+        temp = temp->next;
+    }
+    temp->next = newnode;
+    return head;
+}
+
+struct node* deleteLL(struct node *head)
+{
+    struct node *temp;
+
+    if(head == NULL)
+        return head;
+
+    temp = head;
+    head = head->next;
+    free(temp);
 
     return head;
 }
 
-// Function to display linked list
-void display(struct Node *head)
+struct node* reverse(struct node *head)
 {
-    struct Node *temp = head;
+    struct node *prev = NULL, *temp = head, *next;
 
-    printf("\nLinked List: ");
+    while(temp != NULL)
+    {
+        next = temp->next;
+        temp->next = prev;
+        prev = temp;
+        temp = next;
+    }
+
+    return prev;
+}
+
+void display(struct node *head)
+{
+    struct node *temp = head;
+
+    printf("Linked List: ");
 
     while(temp != NULL)
     {
@@ -56,16 +102,56 @@ void display(struct Node *head)
 
 int main()
 {
-    int N;
+    int n, data, choice;
+    struct node *head = NULL;
 
-    struct Node *head = NULL;
+    printf("Enter size of List: ");
+    scanf("%d", &n);
 
-    printf("Enter size: ");
-    scanf("%d", &N);
+    head = CreateLL(n);
 
-    head = createLL(N);
+    while(1)
+    {
+        printf("\n1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Reverse\n");
+        printf("4. Display\n");
+        printf("5. Exit\n");
 
-    display(head);
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice)
+        {
+            case 1:
+                printf("Enter data to insert: ");
+                scanf("%d", &data);
+                head = insert(head, data);
+                display(head);
+                break;
+
+           case 2:
+                head = deleteLL(head);
+                display(head);
+                break;
+            
+            case 3:
+                head = deleteLL(head);
+                display(head);
+                break;
+                
+            case 4:
+                display(head);
+                break;
+
+            case 5:
+                printf("Program Ended\n");
+                exit(0);
+
+            default:
+                printf("Invalid Choice\n");
+        }
+    }
 
     return 0;
 }
